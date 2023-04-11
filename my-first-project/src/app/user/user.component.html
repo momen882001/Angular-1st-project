@@ -1,2 +1,12 @@
+<input [(ngModel)]="inputText" type="text" class="form-control" />
+<p>{{ inputText }}</p>
 <h3>Mo'men Mohamed</h3>
-
+<button
+  [disabled]="!allowUser"
+  (click)="onCreatingUser()"
+  class="btn btn-primary"
+>
+  Apply
+</button>
+<p [innerText]="addingUser"></p>
+<p [innerText]="allowUser"></p>
