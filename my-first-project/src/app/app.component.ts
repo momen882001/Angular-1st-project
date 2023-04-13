@@ -6,4 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  servers : string[]  = ["server1", "server2"];
+  createServer() : void {
+    this.servers.push("server");
+  }
+
 }

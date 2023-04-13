@@ -9,4 +9,8 @@
   Apply
 </button>
 <p [innerText]="addingUser"></p>
-<p [innerText]="allowUser"></p>
+<button [disabled]=" inputText === '' " (click)="handleResetUser()" class="btn btn-danger">Reset</button>
+<p *ngIf="createUser ; else noCreatedUser" >User is created and the result of input is {{inputText}}</p>
+<ng-template #noCreatedUser>
+<p>User isn't created!</p>
+</ng-template>

@@ -1,3 +1,11 @@
 h1 {
     color: darkblue;
 }
+
+.online {
+    color: white;
+}
+
+.offline {
+    color : blue;
+}

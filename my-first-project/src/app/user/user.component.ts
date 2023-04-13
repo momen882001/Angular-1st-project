@@ -10,6 +10,7 @@ export class UserComponent {
   inputText : string = ''
   addingUser : string = "User need to be added"
   allowUser : boolean = false;
+  createUser : boolean = false;
   constructor() {
     setTimeout(() => {
       this.allowUser = true;
@@ -17,6 +18,7 @@ export class UserComponent {
   }
 
   onCreatingUser() : void {
+    this.createUser = !this.createUser;
     this.addingUser = "user added successfully"
   }
 
@@ -24,4 +26,9 @@ export class UserComponent {
     this.inputText = (<HTMLInputElement>event.target).value
   }
 
+  handleResetUser() : void {
+    this.inputText = ''
+  }
+
 }
+

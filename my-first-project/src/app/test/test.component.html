@@ -1,0 +1,15 @@
+<button (click)="toggleButton()" class="btn btn-primary">
+  display details
+</button>
+<p *ngIf="buttonFlag">Secret password = tuna</p>
+<p
+  *ngFor="let item of log ;let i = index "
+  [ngStyle]="{
+    backgroundColor: i >= 4 ? 'blue' : 'transparent'
+  }"
+  [ngClass]="{
+    testColor: i >= 4
+  }"
+>
+  {{ item }}
+</p>
