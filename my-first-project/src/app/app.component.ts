@@ -12,4 +12,10 @@ export class AppComponent {
     this.servers.push("server");
   }
 
+  // set route mode as recipe or shopping-list
+  routeMode : string = "recipe"
+  handleNavigation(feature : string) : void  {
+    this.routeMode = feature;
+  }
+
 }
