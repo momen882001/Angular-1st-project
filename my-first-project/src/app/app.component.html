@@ -1,9 +1,8 @@
-<app-header (NavigationService)="handleNavigation($event)"></app-header>
+<app-header (NavigationService)="handleNavigation($event)" ></app-header>
 <div class="container">
     <div class="row">
         <div class="col-12">
-           <app-recipes *ngIf="routeMode === 'recipe'"></app-recipes>
-           <app-shopping-list *ngIf="routeMode === 'shopping-list'"></app-shopping-list>
+           <router-outlet></router-outlet>
         </div>
     </div>
 </div>
