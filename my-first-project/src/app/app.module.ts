@@ -17,7 +17,8 @@ import { AuthComponent } from './auth/auth.component';
 import { RoutingModuleApp } from './app-routing.module';
 import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { LoadingComponent } from './shared/Loading-spinner/loading.component';
 
 
 @NgModule({
@@ -34,11 +35,13 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     AuthComponent,
     RecipeStartComponent,
     RecipeEditComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    RoutingModuleApp
+    RoutingModuleApp,
+    HttpClientModule
   ],
   providers: [ShoppingListService],
   bootstrap: [AppComponent]
