@@ -1,7 +1,8 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Ingredients } from '../shared/ingredients.model';
 import { Subject } from 'rxjs';
 
+@Injectable()
 export class ShoppingListService {
   ingredientsUpdated = new Subject<Ingredients[]>();
   editElIndex = new Subject<number>();
