@@ -22,14 +22,8 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    this.http
-      .get<Recipe[]>(
-        'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/recipes.json'
-      )
-      .subscribe((recipes) => {
-        console.log(recipes);
-        // this.recipeService.setRecipes(recipes);
-        this.recipeService.recipesUpdated.next(recipes);
-      });
+    return this.http.get<Recipe[]>(
+      'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/recipes.json'
+    );
   }
 }

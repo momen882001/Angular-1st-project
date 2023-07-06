@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthResponseData, AuthService } from '../services/auth.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-  constructor(private authService : AuthService){}
+  constructor(private authService : AuthService , private router : Router){}
 
   ngOnInit(): void {
 
@@ -41,6 +42,7 @@ export class AuthComponent implements OnInit {
     authObs.subscribe(
       responseData => {
         console.log(responseData);
+        this.router.navigate(['/recipe'])
         this.isLoading = false;
         this.error = null;
       },

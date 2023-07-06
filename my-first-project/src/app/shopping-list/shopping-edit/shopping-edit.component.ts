@@ -1,9 +1,6 @@
 import {
   Component,
-  ElementRef,
-  Output,
   ViewChild,
-  EventEmitter,
   OnInit,
   OnDestroy,
 } from '@angular/core';
@@ -19,23 +16,25 @@ import { Subscription } from 'rxjs';
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
   @ViewChild('f') slForm: NgForm;
-  elementIndex: number;
   editedFlag: boolean = false;
   editSubscription: Subscription;
   editedItem: Ingredients;
+  idFirebase : string;
 
-  constructor(private slService: ShoppingListService) {}
+  constructor(private slService: ShoppingListService ) {}
 
   ngOnInit(): void {
-    this.editSubscription = this.slService.editElIndex.subscribe(
-      (index: number) => {
-        this.elementIndex = index;
+    this.editSubscription = this.slService.editId.subscribe(
+      (id: string) => {
+        this.idFirebase = id;
         this.editedFlag = true;
-        this.editedItem = this.slService.getIngredient(index);
-        this.slForm.setValue({
-          name: this.editedItem.name,
-          amount: this.editedItem.amount,
-        });
+        this.slService.getIngredient(id).subscribe((ingredient : Ingredients) => {
+          this.editedItem = ingredient
+          this.slForm.setValue({
+            amount : this.editedItem.amount,
+            name : this.editedItem.name
+          });
+        })
       }
     );
   }
@@ -48,9 +47,9 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     const value = form.value;
     const newIngredient = new Ingredients(value.name, value.amount);
     if (this.editedFlag) {
-      this.slService.updateIngredient(this.elementIndex, newIngredient);
+      this.slService.updateIngredient(this.idFirebase, newIngredient);
     } else {
-      this.slService.pushIngredient(newIngredient);
+      this.slService.postIngredient(newIngredient);
     }
     this.editedFlag = false;
     form.reset();
@@ -62,7 +61,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.slService.deleteIngredient(this.elementIndex);
+    this.slService.deleteIngredient(this.idFirebase)
     this.onClearForm();
   }
 

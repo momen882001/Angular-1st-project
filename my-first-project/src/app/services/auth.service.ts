@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { User } from '../models/user.model';
 
 export interface AuthResponseData {
   kind: string;
@@ -15,32 +16,69 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  user = new Subject<any>();
   constructor(private http: HttpClient) {}
 
   SignUp(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD5z-ZFWUtN9o3OEkRf0sgyV-VT1RFfEmE',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCTS5bIIEOBWo9ZbHa3gVWbpwU2TsREEuE',
         {
           email: email,
           password: password,
           returnSecureToken: true,
         }
       )
-      .pipe(catchError(this.handleAuthError));
+      .pipe(
+        catchError(this.handleAuthError),
+        tap((resData) => {
+          this.handleAuthantication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
   }
 
   Login(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD5z-ZFWUtN9o3OEkRf0sgyV-VT1RFfEmE',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCTS5bIIEOBWo9ZbHa3gVWbpwU2TsREEuE',
         {
           email: email,
           password: password,
           returnSecureToken: true,
         }
       )
-      .pipe(catchError(this.handleAuthError));
+      .pipe(
+        catchError(this.handleAuthError),
+        tap((resData) => {
+          this.handleAuthantication(
+            resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
+  }
+
+  private handleAuthantication(
+    email: string,
+    userId: string,
+    token: string,
+    expiresIn: number
+  ): void {
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = {
+      email,
+      userId,
+      token,
+      expirationDate,
+    };
+    this.user.next(user);
   }
 
   private handleAuthError(errorRes: HttpErrorResponse) {

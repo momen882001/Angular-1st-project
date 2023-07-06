@@ -7,9 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { ShoppingListService } from './services/shopping-list.service';
 import { RoutingModuleApp } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
-import { ShoppingListModule } from './modules/shopping-list/shopping-list.module';
 import { SharedModule } from './modules/shared.module';
-import { AuthModule } from './modules/auth/auth.module';
 
 
 @NgModule({

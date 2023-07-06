@@ -1,38 +1,69 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredients } from '../shared/ingredients.model';
 import { Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class ShoppingListService {
-  ingredientsUpdated = new Subject<Ingredients[]>();
-  editElIndex = new Subject<number>();
+  constructor(private http: HttpClient) {}
 
-  private ingredients: Ingredients[] = [
-    new Ingredients('Apples', 5),
-    new Ingredients('Tomatoes', 10),
-  ];
+  editId = new Subject<string>();
 
-  getIngredients() {
-    return this.ingredients.slice(); // make a copy
-    // return this.ingredients; // instead of ingredientsUpdated
+  postIngredient(ingredient: Ingredients) {
+    this.http
+      .post(
+        'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/shoppingList.json',
+        ingredient
+      )
+      .subscribe((resData) => {
+        console.log(resData);
+        window.location.reload();
+      });
   }
 
-  getIngredient(index: number) {
-    return this.ingredients[index];
+  fetchingIngredients() {
+    return this.http
+      .get(
+        'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/shoppingList.json'
+      )
+      .pipe(
+        map((responseData) => {
+          const resultIngredientsArray: Ingredients[] = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              resultIngredientsArray.push({ ...responseData[key], id: key });
+            }
+          }
+          return resultIngredientsArray;
+        })
+      );
   }
 
-  updateIngredient(index: number , newIngredient : Ingredients) {
-    this.ingredients[index] = newIngredient;
-    this.ingredientsUpdated.next(this.ingredients);
+  getIngredient(id: string) {
+    return this.http.get(
+      `https://ng-first-project-a26d1-default-rtdb.firebaseio.com/shoppingList/${id}.json`
+    );
   }
 
-  deleteIngredient(index : number) {
-    this.ingredients.splice(index, 1);
-    this.ingredientsUpdated.next(this.ingredients);
+  updateIngredient(id: string, newIngredient: Ingredients) {
+   this.http.put(
+      `https://ng-first-project-a26d1-default-rtdb.firebaseio.com/shoppingList/${id}.json`,
+      newIngredient
+    ).subscribe((resData : Ingredients[]) => {
+      console.log(resData);
+      window.location.reload()
+    })
   }
 
-  pushIngredient(ingredient: Ingredients): void {
-    this.ingredients.push(ingredient);
-    this.ingredientsUpdated.next(this.ingredients);
+  deleteIngredient(id: string) {
+    return this.http
+      .delete(
+        `https://ng-first-project-a26d1-default-rtdb.firebaseio.com/shoppingList/${id}.json`
+      )
+      .subscribe((res) => {
+        console.log(res);
+        window.location.reload()
+      });
   }
 }
