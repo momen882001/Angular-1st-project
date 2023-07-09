@@ -22,11 +22,11 @@ export class RecipeListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.recipes = this.recipeService.getRecipes();
-    this.dataStorageService.fetchRecipes().subscribe(recipes => {
-      this.recipes = recipes;
-      console.log(recipes);
-    })
+    this.recipes = this.recipeService.getRecipes();
+    // this.dataStorageService.fetchRecipes().subscribe(recipes => {
+    //   this.recipes = recipes;
+    //   console.log(recipes);
+    // })
   }
 
   onNewRecipe() {
