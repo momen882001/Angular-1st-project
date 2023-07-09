@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { DataStorageService } from 'src/app/services/data-storage.service';
 import { RecipeService } from 'src/app/services/recipes.service';
+import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -9,26 +11,40 @@ import { RecipeService } from 'src/app/services/recipes.service';
   styleUrls: ['./recipe-edit.component.css'],
 })
 export class RecipeEditComponent implements OnInit {
-  id: number;
+  id: string;
   editMode: boolean = false;
   recipeForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
-    private recipeService: RecipeService
+    private recipeService: RecipeService,
+    private dataStorageRecipes : DataStorageService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
+      this.id = params['id'];
       this.editMode = params['id'] != null;
       this.initForm();
       // console.log(this.editMode);
     });
   }
 
+  onDeleteIngredient(index : number) {
+    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
   onSubmit() {
-    console.log(this.recipeForm.value);
+    if (this.editMode) {
+      this.dataStorageRecipes.updateRecipe(this.id, this.recipeForm.value)
+    }else {
+      this.dataStorageRecipes.postRecipe(this.recipeForm.value)
+    }
+  }
+
+  onCancelRecipeForm() {
+    this.router.navigate(['/recipe'])
   }
 
   onAddIngredient() {
@@ -51,7 +67,7 @@ export class RecipeEditComponent implements OnInit {
     let recipeIngredients = new FormArray([]);
 
     if (this.editMode) {
-      const recipe = this.recipeService.getRecipe(this.id);
+      this.dataStorageRecipes.getRecipe(this.id).subscribe((recipe: Recipe) => {
       recipeName = recipe.name;
       recipDescription = recipe.description;
       recipeImagePath = recipe.imagePath;
@@ -65,6 +81,7 @@ export class RecipeEditComponent implements OnInit {
           );
         }
       }
+    })
     }
 
     this.recipeForm = new FormGroup({

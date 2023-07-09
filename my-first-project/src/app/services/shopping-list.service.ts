@@ -43,7 +43,7 @@ export class ShoppingListService {
   getIngredient(id: string) {
     return this.http.get(
       `https://ng-first-project-a26d1-default-rtdb.firebaseio.com/shoppingList/${id}.json`
-    );
+    )
   }
 
   updateIngredient(id: string, newIngredient: Ingredients) {
