@@ -1,21 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
 
-  servers : string[]  = ["server1", "server2"];
-  createServer() : void {
-    this.servers.push("server");
+  ngOnInit(): void {
+    this.authService.autoLogin();
   }
-
-  // set route mode as recipe or shopping-list
-  routeMode : string = "recipe"
-  handleNavigation(feature : string) : void  {
-    this.routeMode = feature;
-  }
-
 }

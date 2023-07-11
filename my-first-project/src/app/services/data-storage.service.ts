@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RecipeService } from './recipes.service';
 import { Recipe } from '../recipes/recipe.model';
-import { exhaustMap, map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -14,20 +14,6 @@ export class DataStorageService {
     private recipeService: RecipeService,
     private authService: AuthService
   ) {}
-
-  storeRecipes() {
-    const recipes = this.recipeService.getRecipes();
-    this.http
-      .put(
-        'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/recipes.json',
-        recipes
-      )
-      .subscribe((resData) => {
-        console.log(resData);
-      });
-  }
-
-  ////////////////////////////////////////////////////////////////
 
   postRecipe(recipe: Recipe) {
     this.http
@@ -42,26 +28,21 @@ export class DataStorageService {
   }
 
   fetchingRecipes() {
-    return this.authService.user.pipe(
-      take(1),
-      exhaustMap((user) => {
-        return this.http.get(
-          'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/recipesList.json',
-          {
-            params: new HttpParams().set('auth', user.token),
+    return this.http
+      .get(
+        'https://ng-first-project-a26d1-default-rtdb.firebaseio.com/recipesList.json'
+      )
+      .pipe(
+        map((responseData) => {
+          const resultRecipesArray: Recipe[] = [];
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              resultRecipesArray.push({ ...responseData[key], id: key });
+            }
           }
-        );
-      }),
-      map((responseData) => {
-        const resultRecipesArray: Recipe[] = [];
-        for (const key in responseData) {
-          if (responseData.hasOwnProperty(key)) {
-            resultRecipesArray.push({ ...responseData[key], id: key });
-          }
-        }
-        return resultRecipesArray;
-      })
-    );
+          return resultRecipesArray;
+        })
+      );
   }
 
   getRecipe(id: string) {

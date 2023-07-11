@@ -38,8 +38,10 @@ export class RecipeEditComponent implements OnInit {
   onSubmit() {
     if (this.editMode) {
       this.dataStorageRecipes.updateRecipe(this.id, this.recipeForm.value);
+      this.router.navigate(['../'], { relativeTo: this.route });
     } else {
       this.dataStorageRecipes.postRecipe(this.recipeForm.value);
+      this.router.navigate(['../'], { relativeTo: this.route });
     }
   }
 
