@@ -1,10 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
-import { RecipeService } from '../../services/recipes.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { DataStorageService } from 'src/app/services/data-storage.service';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -15,11 +12,9 @@ export class RecipeListComponent implements OnInit {
   @Input() recipes: Recipe[];
 
   constructor(
-    private recipeService: RecipeService,
     private router: Router,
     private route: ActivatedRoute,
     private dataStorageService: DataStorageService,
-    private authService: AuthService
   ) {}
 
   ngOnInit(): void {

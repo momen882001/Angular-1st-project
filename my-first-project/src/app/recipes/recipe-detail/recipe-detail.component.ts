@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
-import { RecipeService } from '../../services/recipes.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DataStorageService } from 'src/app/services/data-storage.service';
 
@@ -14,7 +13,6 @@ export class RecipeDetailComponent implements OnInit {
   id: string;
 
   constructor(
-    private recipeService: RecipeService,
     private route: ActivatedRoute,
     private router: Router,
     private dataStorageService: DataStorageService
