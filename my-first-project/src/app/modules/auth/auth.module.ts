@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthComponent } from 'src/app/auth/auth.component';
+import { AuthComponent } from 'src/app/modules/auth/component/auth.component';
 import { SharedModule } from '../shared.module';
 import { FormsModule } from '@angular/forms';
 

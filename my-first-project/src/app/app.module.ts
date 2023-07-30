@@ -8,7 +8,9 @@ import { ShoppingListService } from './services/shopping-list.service';
 import { RoutingModuleApp } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './modules/shared.module';
-import { AuthInterceptonService } from './services/auth-interceptor.service';
+import { AuthInterceptonService } from './modules/auth/service/auth-interceptor.service';
+
+import { TransalteHttpLoader } from "@ngx-translate/http-loader"
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],

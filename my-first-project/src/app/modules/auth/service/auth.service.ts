@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { User } from '../models/user.model';
+import { User } from '../model/user.model';
 
 export interface AuthResponseData {
   kind: string;
