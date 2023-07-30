@@ -6,18 +6,42 @@
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
-          <a routerLink="/auth" *ngIf="!isAuthanticated">Authantication</a>
+          <a routerLink="/auth" *ngIf="!isAuthanticated">{{
+            "nav.sec3" | translate
+          }}</a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="/recipe" *ngIf="isAuthanticated">Recipes</a>
+          <a routerLink="/recipe" *ngIf="isAuthanticated">{{
+            "nav.sec1" | translate
+          }}</a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="/shoppinglist">Shopping List</a>
+          <a routerLink="/shoppinglist">{{
+            "nav.sec2" | translate
+          }}</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <select
+          style="
+            height: 3rem;
+            margin-top: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            outline: none;
+          "
+          class="custom-select"
+          name=""
+          id=""
+          (change)="translate($event.target.value)"
+        >
+          <option value="en" [selected]="lang == 'en'">English</option>
+          <option value="ar" [selected]="lang == 'ar'">Arabic</option>
+        </select>
         <li *ngIf="isAuthanticated">
-          <a style="cursor: pointer" (click)="onLogOut()">Logout</a>
+          <a style="cursor: pointer" (click)="onLogOut()">{{
+            "nav.button" | translate
+          }}</a>
         </li>
       </ul>
     </div>

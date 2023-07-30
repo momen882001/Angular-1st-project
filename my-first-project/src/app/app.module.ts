@@ -6,11 +6,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { ShoppingListService } from './services/shopping-list.service';
 import { RoutingModuleApp } from './app-routing.module';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule , HttpClient } from '@angular/common/http';
 import { SharedModule } from './modules/shared.module';
 import { AuthInterceptonService } from './modules/auth/service/auth-interceptor.service';
 
-import { TransalteHttpLoader } from "@ngx-translate/http-loader"
+import { TranslateLoader , TranslateModule } from "@ngx-translate/core"
+import { TranslateHttpLoader } from "@ngx-translate/http-loader"
+
+export function httpTranslateLoaderFactory(http : HttpClient) {
+  return new TranslateHttpLoader(http)
+}
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -21,6 +26,13 @@ import { TransalteHttpLoader } from "@ngx-translate/http-loader"
     HttpClientModule,
     SharedModule,
     ReactiveFormsModule,
+    TranslateModule.forRoot({
+      loader : {
+        provide : TranslateLoader,
+        useFactory : httpTranslateLoaderFactory,
+        deps : [HttpClient]
+      }
+    })
   ],
   providers: [
     ShoppingListService,

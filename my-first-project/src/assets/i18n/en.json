@@ -1,0 +1,8 @@
+{
+  "nav" : {
+    "sec1" : "Recipes",
+    "sec2" : "Shopping List",
+    "sec3" : "Authantication",
+    "button" : "Logout"
+  }
+}
