@@ -36,6 +36,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   translate(lang : any) {
     localStorage.setItem("language" , lang)
     this.translateService.use(lang)
+    document.body.dir = lang === 'en' ? 'ltr' : 'rtl'
+
   }
 
   ngOnDestroy(): void {
